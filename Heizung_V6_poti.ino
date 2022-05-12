@@ -24,8 +24,8 @@ int PWM_Resolution = 8;
 int pin_PWM_1 = 12;         //Relay 1 (rotes Kabel)
 int pin_PWM_2 =14;          //Relay 2 (gelbes Kabel)
 
-int PWM1_DutyCycle = 51.2;          //20% von 100% in Bit
-int PWM2_DutyCycle = 51.2;          //20% von 100% in Bit 
+int PWM1_DutyCycle = 51;          //20% von 100% in Bit
+int PWM2_DutyCycle = 51;          //20% von 100% in Bit 
 
 
 //PID Regler für Heizung
