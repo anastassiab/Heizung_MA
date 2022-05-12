@@ -32,6 +32,9 @@ int PWM2_DutyCycle = 51;          //20% von 100% in Bit
 int pin_Poti_1 = 34; // Anaqlog pin für Poti
 int potValue_1 = 0;
 //float voltage = 0;
+int pin_Poti_2 = 35; // Analog pin für Poti
+int potValue_2 = 0;
+
 
 //PID Regler für Heizung
 #include "PID_v1.h"
@@ -74,6 +77,7 @@ void setup() {
   pinMode(pin_PWM_1,OUTPUT);//_______PWM als Output definiert
   pinMode(pin_PWM_2,OUTPUT);
   pinMode(pin_Poti_1, INPUT);//_______pin Poti als Input definiert
+  pinMode(pin_Poti_2, INPUT);
 
   //PID Setup
 
@@ -84,7 +88,7 @@ void setup() {
   TemperaturControl1.SetOutputLimits(0, 51.2); //Begrenzung Regelbereich ( PWM-Grenzen an Output-Pin werden begrenzt,hier 0-20%; 20% von 8Bit)
 
 
-  SetpointTemperatur2 = 35;
+  //SetpointTemperatur2 = 35;
 
   TemperaturControl2.SetMode(AUTOMATIC); // PID-Regler an- (AUTOMATIC) oder ausschalten (MANUAL)
   TemperaturControl2.SetSampleTime(PIDSAMPLETIME_MS);
@@ -101,9 +105,14 @@ void loop() {
   int potValue_1 = analogRead(pin_Poti_1);
  // float voltage = floatMap(potValue, 0, 4095, 0, 3.3);
  // double SetpointTemperatur1 = doubleMap(double(potValue_1), 0, 4095, 20, 50);
-  SetpointTemperatur1 = map(potValue_1, 0, 4095, 20,50);
- double SetpointTemperatur1 = doubleMap(double(potValue_1), 0, 4095, 20, 50);
+  //SetpointTemperatur1 = map(potValue_1, 0, 4095, 20,50);
+SetpointTemperatur1 = doubleMap(double(potValue_1), 0, 4095, 20, 50);
 
+  int potValue_2 = analogRead(pin_Poti_2);
+ // float voltage = floatMap(potValue, 0, 4095, 0, 3.3);
+ // double SetpointTemperatur1 = doubleMap(double(potValue_1), 0, 4095, 20, 50);
+  //SetpointTemperatur1 = map(potValue_1, 0, 4095, 20,50);
+SetpointTemperatur2 = doubleMap(double(potValue_2), 0, 4095, 20, 50);
  
   Serial.print(potValue_1);
   Serial.print("\t");
@@ -128,7 +137,33 @@ void loop() {
   
   Serial.print(PWM_1_Wert);
   Serial.print("\t");
-  Serial.println(OutputPWM1);
+  Serial.print(OutputPWM1);
+  Serial.print("\t");
+
+  Serial.print(potValue_2);
+  Serial.print("\t");
+ // Serial.print(" Temp:");
+ // Serial.println(Temp);
+ // Serial.print("Voltage:");
+ // Serial.println(voltage);
+
+// Ausgabe der Daten von Heizelement 2
+  InputTemperatur2 = (thermocouple_2.readCelsius());
+  Serial.print(InputTemperatur2);
+  Serial.print("\t");
+ 
+  
+  Serial.print(SetpointTemperatur2);
+  Serial.print("\t");
+  
+  TemperaturControl2.Compute();
+  analogWrite(14,OutputPWM2);
+  
+  double PWM_2_Wert = (OutputPWM2 *100) / 256; // Umrechnung in Prozent
+  
+  Serial.print(PWM_2_Wert);
+  Serial.print("\t");
+  Serial.println(OutputPWM2);
 //  Serial.print("\t");
 
   /*
