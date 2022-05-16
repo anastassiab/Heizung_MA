@@ -66,13 +66,13 @@ bool PID::Compute()
       double input = *myInput;
 
       /* Temporary solution for NaN handling*/
-      if (lastInput != lastInput){
-         lastInput = 0.0
+      if (outputSum != outputSum){
+         outputSum = 0.0;
       }
 
       double error = *mySetpoint - input;
       double dInput = (input - lastInput);
-
+/*
       Serial.print(input);
       Serial.print("\t");
 
@@ -88,7 +88,7 @@ bool PID::Compute()
       Serial.print(outputSum);
       Serial.print("\t");
 
-      Serial.print("\n");
+      Serial.print("\n");*/
 
       outputSum+= (ki * error);
 
