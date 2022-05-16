@@ -64,8 +64,32 @@ bool PID::Compute()
    {
       /*Compute all the working error variables*/
       double input = *myInput;
+
+      /* Temporary solution for NaN handling*/
+      if (outputSum != outputSum){
+         outputSum = 0.0;
+      }
+
       double error = *mySetpoint - input;
       double dInput = (input - lastInput);
+/*
+      Serial.print(input);
+      Serial.print("\t");
+
+      Serial.print(lastInput);
+      Serial.print("\t");
+
+      Serial.print(error);
+      Serial.print("\t");
+      
+      Serial.print(dInput);
+      Serial.print("\t");
+
+      Serial.print(outputSum);
+      Serial.print("\t");
+
+      Serial.print("\n");*/
+
       outputSum+= (ki * error);
 
       /*Add Proportional on Measurement, if P_ON_M is specified*/
