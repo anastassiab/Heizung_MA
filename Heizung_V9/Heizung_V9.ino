@@ -276,7 +276,10 @@ void Solltemp1() {
     if ((temp1 >= '0') && (temp1 <= '9')) {
       
         temp1_1 += temp1;
-       
+    }  
+    else if (temp1 == '-') {
+      sign = -1; 
+    }
    /* } else if (temp1 == '-') {
       isNegative = true;
     } else if (temp1 == '\r') {
@@ -286,7 +289,7 @@ void Solltemp1() {
         Serial.println(SetpointTemperatur1);
        isNegative = false; 
       }*/
-     } 
+     
      else if (temp1 == '\n') {
         if (not_number) {
             Serial.println("not a number");
@@ -300,6 +303,9 @@ void Solltemp1() {
      temp1_1 = "";
   }
   else {
+    SetpointTemperatur1 = temp1_1.toDouble() * sign;
+     Serial.print("Solltemp1 = ");
+     Serial.println(SetpointTemperatur1);
       not_number =true;
   }
       
