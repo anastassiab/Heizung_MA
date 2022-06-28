@@ -7,7 +7,7 @@ char temp1 = 0 ;
 String temp1_1 = "";
 boolean not_number =false;
 double sign = 1;
-static bool isNegative;
+
 
 int pinThermoDO = 4;
 int pinThermoCS_1 = 16;
@@ -267,8 +267,8 @@ delay(250);
    
 }
 
-
-void Solltemp1() {
+// Online-Anpassung der Sollwert Temperatur 
+void Solltemp1() {                 
   if (Serial.available() > 0) {
    
     temp1 = Serial.read(); 
@@ -280,65 +280,30 @@ void Solltemp1() {
     else if (temp1 == '-') {
       sign = -1; 
     }
-   /* } else if (temp1 == '-') {
-      isNegative = true;
-    } else if (temp1 == '\r') {
-      if (isNegative) {
-       SetpointTemperatur1 = -temp1_1.toDouble();
-        Serial.print("Solltemp1 = ");
-        Serial.println(SetpointTemperatur1);
-       isNegative = false; 
-      }*/
+ 
      
      else if (temp1 == '\n') {
         if (not_number) {
             Serial.println("not a number");
         }
-        else {
-            SetpointTemperatur1 = temp1_1.toDouble();
+        else { 
+      SetpointTemperatur1 = temp1_1.toDouble() * sign;
             Serial.print("Solltemp1 = ");
             Serial.println(SetpointTemperatur1);
+           
         }
      not_number = false;
      temp1_1 = "";
   }
   else {
-    SetpointTemperatur1 = temp1_1.toDouble() * sign;
-     Serial.print("Solltemp1 = ");
-     Serial.println(SetpointTemperatur1);
+      
       not_number =true;
+      sign = 1;
   }
       
   }
 }
       
-    /*
-    else if (temp1 == '\n') {
-      if (not_number) {
-        Serial.println("not a number");
-      }
-    }
-      
 
-    else{
-        SetpointTemperatur1 = temp1_1.toDouble();
-        Serial.print("Solltemp1 = ");
-        Serial.println(temp1_1);
-    }
-      not_number = false;
-      temp1_1 = "";
- 
-    
-    }
-
-    if (temp1 == '-') {
-      sign = -1;}
-      else {
-     SetpointTemperatur1 = SetpointTemperatur1 * sign; }
-     sign =1;
-    else {
-      not_number =true;
-      */
-    
     
   
