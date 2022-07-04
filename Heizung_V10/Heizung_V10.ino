@@ -3,6 +3,18 @@
 #include "max6675.h"
 //#include "loopTimer.h"
 
+struct UserDataInput
+{
+  /* data */
+  double kP;
+  double kI;
+  double kD;
+  double temp1;
+  double temp2;
+};
+
+UserDataInput userData = {0.0, 0.0, 0.0, 0.0, 0.0};
+
 double new_OutputPWM1;
 
 int pinThermoDO = 4;
@@ -109,14 +121,17 @@ void loop() {
 
  // loopTimer.check(Serial);
  
- Solltemp1();
+    userData = Solltemp1();
+
+    SetpointTemperatur1 = userData.temp1;
+    SetpointTemperatur2 =  userData.temp2;
 
 
-    Serial.print(Kp);
+    Serial.print(userData.kP);
     Serial.print(" ");
-    Serial.print(Ki);
+    Serial.print(userData.kI);
     Serial.print(" ");
-    Serial.print(Kd);
+    Serial.print(userData.kD);
     Serial.print("    ");
 
 
@@ -281,20 +296,23 @@ delay(250);
 }
 
 
- void Solltemp1(){
+
+
+ UserDataInput Solltemp1(){
+  
+    UserDataInput dataOut;
 
     while(Serial.available() > 0){
 
-      Kp = Serial.readStringUntil(';').toDouble();
-      Ki = Serial.readStringUntil(';').toDouble();
-      Kd = Serial.readStringUntil(';').toDouble();
+      dataOut.kP = Serial.readStringUntil(';').toDouble();
+      dataOut.kI = Serial.readStringUntil(';').toDouble();
+      dataOut.kd = Serial.readStringUntil(';').toDouble();
 
-      SetpointTemperatur1 = Serial.readStringUntil(';').toDouble();
-
-      SetpointTemperatur2 = Serial.readStringUntil('\n').toDouble();
+      dataOut.temp1 = Serial.readStringUntil(';').toDouble();
+      dataOut.temp2 = Serial.readStringUntil('\n').toDouble();
+      //SetpointTemperatur1 = Serial.readStringUntil(';').toDouble();
+      //SetpointTemperatur2 = Serial.readStringUntil('\n').toDouble();
     }
-
-
 
  }
 
